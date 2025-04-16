@@ -1,7 +1,7 @@
 // Lab9HMain.cpp
 // Runs on MSPM0G3507
 // Lab 9 ECE319H
-// Your name
+// Sanjay Senthil
 // Last Modified: 12/26/2024
 
 #include <stdio.h>
@@ -82,7 +82,7 @@ const char *Phrases[3][4]={
   {Language_English,Language_Spanish,Language_Portuguese,Language_French}
 };
 // use main1 to observe special characters
-int main(void){ // main1
+int main1(void){ // main1
     char l;
   __disable_irq();
   PLL_Init(); // set bus speed
@@ -117,7 +117,7 @@ int main(void){ // main1
 }
 
 // use main2 to observe graphics
-int main2(void){ // main2
+int main(void){ // main2
   __disable_irq();
   PLL_Init(); // set bus speed
   LaunchPad_Init();
