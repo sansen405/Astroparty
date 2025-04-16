@@ -124,30 +124,19 @@ int main(void){ // main2
   ST7735_InitPrintf();
     //note: if you colors are weird, see different options for
     // ST7735_InitR(INITR_REDTAB); inside ST7735_InitPrintf()
-  
-  int startY = 159;
-  for(int i = 0; i < 100; i++){
-      ST7735_FillRect(22, startY, 18, 8, ST7735_BLACK);
+  ST7735_FillScreen(ST7735_BLUE);
+  ST7735_DrawBitmap(22, 159, PlayerShip0, 18,8); // player ship bottom
+  ST7735_DrawBitmap(53, 151, Bunker0, 18,5);
+  ST7735_DrawBitmap(42, 159, PlayerShip1, 18,8); // player ship bottom
+  ST7735_DrawBitmap(62, 159, PlayerShip2, 18,8); // player ship bottom
+  ST7735_DrawBitmap(82, 159, PlayerShip3, 18,8); // player ship bottom
+  ST7735_DrawBitmap(0, 9, SmallEnemy10pointA, 16,10);
+  ST7735_DrawBitmap(20,9, SmallEnemy10pointB, 16,10);
+  ST7735_DrawBitmap(40, 9, SmallEnemy20pointA, 16,10);
+  ST7735_DrawBitmap(60, 9, SmallEnemy20pointB, 16,10);
+  ST7735_DrawBitmap(80, 9, SmallEnemy30pointA, 16,10);
 
-      // Draw the new sprite
-      int newY = 159 - i;
-      ST7735_DrawBitmap(22, newY, PlayerShip0, 18, 8);
-      startY = newY;
-
-      Clock_Delay1ms(50);
-  }
-   // player ship bottom
-  // ST7735_DrawBitmap(53, 151, Bunker0, 18,5);
-  // ST7735_DrawBitmap(42, 159, PlayerShip1, 18,8); // player ship bottom
-  // ST7735_DrawBitmap(62, 159, PlayerShip2, 18,8); // player ship bottom
-  // ST7735_DrawBitmap(82, 159, PlayerShip3, 18,8); // player ship bottom
-  // ST7735_DrawBitmap(0, 9, SmallEnemy10pointA, 16,10);
-  // ST7735_DrawBitmap(20,9, SmallEnemy10pointB, 16,10);
-  // ST7735_DrawBitmap(40, 9, SmallEnemy20pointA, 16,10);
-  // ST7735_DrawBitmap(60, 9, SmallEnemy20pointB, 16,10);
-  // ST7735_DrawBitmap(80, 9, SmallEnemy30pointA, 16,10);
-
-  for(uint32_t t=500000;t>0;t=t-5){
+  for(uint32_t t=500;t>0;t=t-5){
     SmallFont_OutVertical(t,104,6); // top left
     Clock_Delay1ms(50);              // delay 50 msec
   }
@@ -204,14 +193,13 @@ int main4(void){ uint32_t last=0,now;
   }
 }
 // ALL ST7735 OUTPUT MUST OCCUR IN MAIN
-int main5(void){ // final main
+int main(void){ // final main
   __disable_irq();
   PLL_Init(); // set bus speed
   LaunchPad_Init();
   ST7735_InitPrintf();
     //note: if you colors are weird, see different options for
     // ST7735_InitR(INITR_REDTAB); inside ST7735_InitPrintf()
-  ST7735_FillScreen(ST7735_BLACK);
   Sensor.Init(); // PB18 = ADC1 channel 5, slidepot
   Switch_Init(); // initialize switches
   LED_Init();    // initialize LED
@@ -222,10 +210,50 @@ int main5(void){ // final main
   // initialize all data structures
   __enable_irq();
 
-  while(1){
-    // wait for semaphore
-       // clear semaphore
-       // update ST7735R
-    // check for end game or level switch
+  const int initialY = 160;
+  const int initialX = 30;
+
+  int oldY = initialY;
+  int oldX = initialX;
+
+  const int spriteWidth = 18;
+  const int spriteHeight = 8;
+  
+  const uint16_t bgColor = ST7735_BLUE;
+  ST7735_FillScreen(ST7735_BLUE);
+
+  for (int i = 0; i < 100; i++) {
+    int newY = initialY - i;
+    int newX = initialX + i;
+
+//Replace Previous
+    for (int row = 0; row < spriteHeight; row++) {
+      for (int col = 0; col < spriteWidth; col++) {
+          ST7735_DrawPixel(oldX + col, oldY - row, bgColor);
+      }
+    }
+
+//Redraw Sprite (Transparent)
+    int spriteColorIndex = 0;
+    for (int row = 0; row < spriteHeight; row++) {
+      for (int col = 0; col < spriteWidth; col++) {
+        int currPixelColor = PlayerShip0[spriteColorIndex];
+        spriteColorIndex++;
+
+        if (currPixelColor == ST7735_BLACK) {
+            ST7735_DrawPixel(newX + col, newY - row, bgColor);
+        } 
+        else {
+            ST7735_DrawPixel(newX + col, newY - row, currPixelColor);
+        }
+      }
+    }
+
+//Set old-pos to new-pos
+    oldY = newY;
+    oldX = newX;
+    Clock_Delay1ms(50);
   }
+
+  while(1) {}
 }

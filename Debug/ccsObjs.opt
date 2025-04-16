@@ -3,6 +3,7 @@
 "./LED.o"
 "./Lab9HMain.o"
 "./LaunchPad.o"
+"./Rocket.o"
 "./SPI.o"
 "./ST7735.o"
 "./SlidePot.o"
