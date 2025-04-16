@@ -124,19 +124,30 @@ int main(void){ // main2
   ST7735_InitPrintf();
     //note: if you colors are weird, see different options for
     // ST7735_InitR(INITR_REDTAB); inside ST7735_InitPrintf()
-  ST7735_FillScreen(ST7735_BLACK);
-  ST7735_DrawBitmap(22, 159, PlayerShip0, 18,8); // player ship bottom
-  ST7735_DrawBitmap(53, 151, Bunker0, 18,5);
-  ST7735_DrawBitmap(42, 159, PlayerShip1, 18,8); // player ship bottom
-  ST7735_DrawBitmap(62, 159, PlayerShip2, 18,8); // player ship bottom
-  ST7735_DrawBitmap(82, 159, PlayerShip3, 18,8); // player ship bottom
-  ST7735_DrawBitmap(0, 9, SmallEnemy10pointA, 16,10);
-  ST7735_DrawBitmap(20,9, SmallEnemy10pointB, 16,10);
-  ST7735_DrawBitmap(40, 9, SmallEnemy20pointA, 16,10);
-  ST7735_DrawBitmap(60, 9, SmallEnemy20pointB, 16,10);
-  ST7735_DrawBitmap(80, 9, SmallEnemy30pointA, 16,10);
+  
+  int startY = 159;
+  for(int i = 0; i < 100; i++){
+      ST7735_FillRect(22, startY, 18, 8, ST7735_BLACK);
 
-  for(uint32_t t=500;t>0;t=t-5){
+      // Draw the new sprite
+      int newY = 159 - i;
+      ST7735_DrawBitmap(22, newY, PlayerShip0, 18, 8);
+      startY = newY;
+
+      Clock_Delay1ms(50);
+  }
+   // player ship bottom
+  // ST7735_DrawBitmap(53, 151, Bunker0, 18,5);
+  // ST7735_DrawBitmap(42, 159, PlayerShip1, 18,8); // player ship bottom
+  // ST7735_DrawBitmap(62, 159, PlayerShip2, 18,8); // player ship bottom
+  // ST7735_DrawBitmap(82, 159, PlayerShip3, 18,8); // player ship bottom
+  // ST7735_DrawBitmap(0, 9, SmallEnemy10pointA, 16,10);
+  // ST7735_DrawBitmap(20,9, SmallEnemy10pointB, 16,10);
+  // ST7735_DrawBitmap(40, 9, SmallEnemy20pointA, 16,10);
+  // ST7735_DrawBitmap(60, 9, SmallEnemy20pointB, 16,10);
+  // ST7735_DrawBitmap(80, 9, SmallEnemy30pointA, 16,10);
+
+  for(uint32_t t=500000;t>0;t=t-5){
     SmallFont_OutVertical(t,104,6); // top left
     Clock_Delay1ms(50);              // delay 50 msec
   }
