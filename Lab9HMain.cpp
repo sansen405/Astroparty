@@ -33,7 +33,7 @@ void PLL_Init(void){ // set phase lock loop (PLL)
 
 uint32_t M=1;
 uint32_t Random32(void){
-  M = 1664525*M+1013904223
+  M = 1664525*M+1013904223;
   return M;
 }
 uint32_t Random(uint32_t n){
