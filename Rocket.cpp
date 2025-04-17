@@ -71,7 +71,6 @@ int rocket::getVX() {
 int rocket::getVY() {
     return vY; // just above the rocket (tip of the nose)
 }
-
     // if button is pressed call rotate 
 void rocket::rotate(){
     // Circular velocity steps (unit circle * 3 for speed)

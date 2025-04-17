@@ -13,6 +13,9 @@ void Switch_Init(void){
   IOMUX->SECCFG.PINCM[PA27INDEX] = 0x00040081; // input, no pull
   IOMUX->SECCFG.PINCM[PA16INDEX] = 0x00040081; // input, no pull
   IOMUX->SECCFG.PINCM[PA15INDEX] = 0x00040081; // input, no pull
+
+  IOMUX->SECCFG.PINCM[PB0INDEX] = 0x040081; // input
+  IOMUX->SECCFG.PINCM[PB1INDEX] = 0x040081; // input
 }
 // return current state of switches
 uint32_t Switch_In(void){

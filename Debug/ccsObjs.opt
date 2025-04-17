@@ -1,3 +1,4 @@
+"./Bullet.o"
 "./Clock.o"
 "./DAC5.o"
 "./LED.o"
