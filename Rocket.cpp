@@ -1,63 +1,136 @@
-// #include <stdio.h>
-// #include <stdint.h>
-// #include <ti/devices/msp/msp.h>
-// #include "../inc/ST7735.h"
-// #include "../inc/Clock.h"
-// #include "../inc/LaunchPad.h"
-// #include "../inc/TExaS.h"
-// #include "../inc/Timer.h"
-// #include "../inc/SlidePot.h"
-// #include "../inc/DAC5.h"
-// #include "SmallFont.h"
-// #include "LED.h"
-// #include "Switch.h"
-// #include "Sound.h"
-// #include "images/images.h"
+#include <stdio.h>
+#include <stdint.h>
+#include <ti/devices/msp/msp.h>
+#include "../inc/ST7735.h"
+#include "../inc/Clock.h"
+#include "../inc/LaunchPad.h"
+#include "../inc/TExaS.h"
+#include "../inc/Timer.h"
+#include "../inc/SlidePot.h"
+#include "../inc/DAC5.h"
+#include "SmallFont.h"
+#include "LED.h"
+#include "Switch.h"
+#include "Sound.h"
+#include "images/images.h"
+#include "Rocket.h"
+// Blue Rocket ///
+const unsigned short BlueRocket_15x24[] = {
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xF7BF, 0xF7DF, 0xF7DF, 0xEF9F, 0xEF7E, 0xF7BF, 0xFFFF, 0xFFFF, 0xFFDF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xEF9F, 0xD6BB,
+ 0xDEBB, 0xDEDC, 0xCDF6, 0xC552, 0xCE38, 0xE73C, 0xE71B, 0xE73D, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xC6DF, 0xAD14, 0xB4B0,
+ 0xBCF1, 0x9B68, 0x8A00, 0xA3AA, 0xBD31, 0xB4CF, 0xCE38, 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xBEBF, 0xB4F3, 0xB387, 0xBBC7,
+ 0xB344, 0xAAA1, 0xBB65, 0xBBC7, 0xA3A7, 0xC617, 0xE7BF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xBEBF, 0xBD13, 0xB303, 0xC321, 0xCBA3,
+ 0xD3A4, 0xD3A3, 0xBB00, 0xAB24, 0xC617, 0xDF9F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xB69F, 0xACF4, 0xAB04, 0xBB22, 0xCB83, 0xC384,
+ 0xCB83, 0xBB01, 0xA345, 0xBDF8, 0xE79F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xC6FF, 0xA579, 0xAB68, 0xBB22, 0xCB63, 0xC384, 0xC363,
+ 0xBB02, 0xABEA, 0xCE7B, 0xEFBF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xE77F, 0xAE5E, 0xAC0D, 0xBB23, 0xCB63, 0xCBA4, 0xC342, 0xB304,
+ 0xB4D1, 0xDF5F, 0xFFDF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFDF, 0xC6DF, 0xACF3, 0xAB26, 0xC323, 0xCBA3, 0xBB41, 0xAB67, 0xC5B7,
+ 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xDF5F, 0xB5D9, 0xAB89, 0xBB02, 0xC363, 0xB302, 0xABEA, 0xD6BC, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xEFBF, 0xCEDF, 0xAC2D, 0xB302, 0xBB02, 0xAAE3, 0xB4AF, 0xEFBF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xDF5F, 0xB513, 0xB344, 0xB2A0, 0xAB47, 0xC5B5, 0xEFDF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xE79F, 0xC618, 0xB3A8, 0xAA60, 0xB3EA, 0xCE9B, 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xDF1D, 0xB42D, 0x9AA2, 0xB48F, 0xE75F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xF7BF, 0xBD11, 0xA368, 0xBD74, 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xD636, 0xB4D0, 0xD699, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xEF3C, 0xDE9A, 0xEF5D, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFDF, 0xF7BF, 0xFFDF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF
+};
 
-// class Rocket{
-//     private:
-//         int dimX;
-//         int dimY;
-//         int posX;
-//         int posY;
-//         int vX;
-//         int vY;
-//         int direction;
+rocket :: rocket(int x,int y) {
+        posX = x;
+        posY = y;
+        vX = 0;
+        vY = 0;
+        aX = 0;
+        aY = 0;
+        dimX = 15;
+        dimY = 24;
+    }
 
-//     public:
-//         rocket(int posX, int posY){
-//             posX = posX;
-//             posY = posY;
-//             dimX = 15;
-//             dimY = 24;
-//             vX = 0;
-//             vY = 0;
-//             dir = 0; //represents index in rocket costumes array for rotate
-//         }
 
-//         void setVelocity(int vX, int vY){
-//             this->vX = vX;
-//             this->vY = vY;
-//         }
+#define TIP_OFFSET 15  // how far from center to tip (adjust to fit rocket sprite)
 
-//         void startMoving(){
-//             vX = 0;
-//             vY = 2;
-//         }
+int rocket::getX() {
+    return posX + dimX/2;
+}
 
-//         void rotate(){
-//             //iterate through array of rocket costumes for rotation
-//             //change velocity in x and y
-//         }
+int rocket::getY() {
+    return posY - dimY/2;  // minus because screen Y grows downward
+}
 
-//         int getVelocityX_FromDir(int dir){
 
-//         }
+int rocket::getVX() {
+    return vX; // center of the rocket horizontally
+}
 
-//         int getVelocityY_FromDir(int dir){
-            
-//         }
-// }
+int rocket::getVY() {
+    return vY; // just above the rocket (tip of the nose)
+}
 
+    // if button is pressed call rotate 
+void rocket::rotate(){
+    // Circular velocity steps (unit circle * 3 for speed)
+    int rotateX[16] = {
+         0,  1,  2,  3,  3,  3,  2,  1,
+         0, -1, -2, -3, -3, -3, -2, -1
+    };
+
+    int rotateY[16] = {
+        -3, -3, -2, -1,  0,  1,  2,  3,
+         3,  3,  2,  1,  0, -1, -2, -3
+    };
+
+    static int direction = 0;         // keeps track of rotation index
+    direction = (direction + 1) % 16; // rotate clockwise
+
+    vX = rotateX[direction];
+    vY = rotateY[direction];
+}
+
+void rocket:: startMoving (int velX, int velY) {
+        vY = velY;
+        vX = velX;
+    }
+    // setting
+void rocket:: setVelocity(int velocityX, int velocityY) {
+        this->vX = velocityX;
+        this->vY = velocityY;
+    }
+
+void rocket:: draw() {
+        // ST7735_FillRect(posX, posY, dimX, dimY, ST7735_CYAN);// makes so it doesnt drag
+        // Clear previous sprite from screen using correct Y-offset
+ST7735_FillRect(posX, posY - dimY + 1, dimX, dimY, ST7735_CYAN);
+
+
+        if(posX+vX<=(127-15) && posX+vX>=0) {
+            posX+=vX;
+         }
+        if (posY+vY <=159 && posY+vY>=(0+24)) {
+            posY+=vY;
+         }
+
+        ST7735_DrawBitmap(posX, posY,BlueRocket_15x24, 15, 24);
+        int spriteColorIndex = 0;
+        
+        for (int row = 0; row < dimY; row++) {
+            for (int col = 0; col < dimX; col++) {
+                int currPixelColor = BlueRocket_15x24[spriteColorIndex];
+                spriteColorIndex++;
+
+                if (currPixelColor == ST7735_WHITE) {
+                    ST7735_DrawPixel(posX + col, posY - row, ST7735_CYAN);
+                }
+            else {
+                ST7735_DrawPixel(posX + col, posY - row, currPixelColor);
+            }
+        }
+    }
+}
 
 
