@@ -1,7 +1,7 @@
 // Lab9HMain.cpp
 // Runs on MSPM0G3507
 // Lab 9 ECE319H
-// Sanjay Senthil
+// Your name
 // Last Modified: 12/26/2024
 
 #include <stdio.h>
@@ -19,6 +19,13 @@
 #include "Switch.h"
 #include "Sound.h"
 #include "images/images.h"
+
+#include "Rocket.h"
+#include "Bullet.h"
+// ships as global declerations
+  rocket* ship1;
+  bullet* currentBullet = nullptr;
+  int flag = 0;
 extern "C" void __disable_irq(void);
 extern "C" void __enable_irq(void);
 extern "C" void TIMG12_IRQHandler(void);
@@ -50,7 +57,20 @@ void TIMG12_IRQHandler(void){uint32_t pos,msg;
 // game engine goes here
     // 1) sample slide pot
     // 2) read input switches
+    // read input from switches ()
+    flag = 1;
+      int turn = GPIOB->DIN31_0 & 0x1; // gets value to turn
     // 3) move sprites
+      if (turn) {
+        ship1->rotate();
+      }
+
+      int shoot = GPIOB->DIN31_0 & 0x2;
+      if (shoot) {
+        if (currentBullet == nullptr) {
+            currentBullet = new bullet(*ship1); // Copy rocket state
+        }
+      }
     // 4) start sounds
     // 5) set semaphore
     // NO LCD OUTPUT IN INTERRUPT SERVICE ROUTINES
@@ -116,39 +136,62 @@ int main1(void){ // main1
   }
 }
 
+///////////////////////
+//// ALL IMAGES ////
+///////////////////////
+
+// Blue Rocket ///
+const unsigned short BlueRocket_15x24[] = {
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xF7BF, 0xF7DF, 0xF7DF, 0xEF9F, 0xEF7E, 0xF7BF, 0xFFFF, 0xFFFF, 0xFFDF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xEF9F, 0xD6BB,
+ 0xDEBB, 0xDEDC, 0xCDF6, 0xC552, 0xCE38, 0xE73C, 0xE71B, 0xE73D, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xC6DF, 0xAD14, 0xB4B0,
+ 0xBCF1, 0x9B68, 0x8A00, 0xA3AA, 0xBD31, 0xB4CF, 0xCE38, 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xBEBF, 0xB4F3, 0xB387, 0xBBC7,
+ 0xB344, 0xAAA1, 0xBB65, 0xBBC7, 0xA3A7, 0xC617, 0xE7BF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xBEBF, 0xBD13, 0xB303, 0xC321, 0xCBA3,
+ 0xD3A4, 0xD3A3, 0xBB00, 0xAB24, 0xC617, 0xDF9F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xB69F, 0xACF4, 0xAB04, 0xBB22, 0xCB83, 0xC384,
+ 0xCB83, 0xBB01, 0xA345, 0xBDF8, 0xE79F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xC6FF, 0xA579, 0xAB68, 0xBB22, 0xCB63, 0xC384, 0xC363,
+ 0xBB02, 0xABEA, 0xCE7B, 0xEFBF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xE77F, 0xAE5E, 0xAC0D, 0xBB23, 0xCB63, 0xCBA4, 0xC342, 0xB304,
+ 0xB4D1, 0xDF5F, 0xFFDF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFDF, 0xC6DF, 0xACF3, 0xAB26, 0xC323, 0xCBA3, 0xBB41, 0xAB67, 0xC5B7,
+ 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xDF5F, 0xB5D9, 0xAB89, 0xBB02, 0xC363, 0xB302, 0xABEA, 0xD6BC, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xEFBF, 0xCEDF, 0xAC2D, 0xB302, 0xBB02, 0xAAE3, 0xB4AF, 0xEFBF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xDF5F, 0xB513, 0xB344, 0xB2A0, 0xAB47, 0xC5B5, 0xEFDF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xE79F, 0xC618, 0xB3A8, 0xAA60, 0xB3EA, 0xCE9B, 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xDF1D, 0xB42D, 0x9AA2, 0xB48F, 0xE75F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xF7BF, 0xBD11, 0xA368, 0xBD74, 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xD636, 0xB4D0, 0xD699, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xEF3C, 0xDE9A, 0xEF5D, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFDF, 0xF7BF, 0xFFDF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+ 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF
+};
+
 // use main2 to observe graphics
-int main(void){ // main2
+int main2(void){ // main2
   __disable_irq();
   PLL_Init(); // set bus speed
   LaunchPad_Init();
   ST7735_InitPrintf();
     //note: if you colors are weird, see different options for
     // ST7735_InitR(INITR_REDTAB); inside ST7735_InitPrintf()
-  ST7735_FillScreen(ST7735_BLUE);
-  ST7735_DrawBitmap(22, 159, PlayerShip0, 18,8); // player ship bottom
-  ST7735_DrawBitmap(53, 151, Bunker0, 18,5);
-  ST7735_DrawBitmap(42, 159, PlayerShip1, 18,8); // player ship bottom
-  ST7735_DrawBitmap(62, 159, PlayerShip2, 18,8); // player ship bottom
-  ST7735_DrawBitmap(82, 159, PlayerShip3, 18,8); // player ship bottom
-  ST7735_DrawBitmap(0, 9, SmallEnemy10pointA, 16,10);
-  ST7735_DrawBitmap(20,9, SmallEnemy10pointB, 16,10);
-  ST7735_DrawBitmap(40, 9, SmallEnemy20pointA, 16,10);
-  ST7735_DrawBitmap(60, 9, SmallEnemy20pointB, 16,10);
-  ST7735_DrawBitmap(80, 9, SmallEnemy30pointA, 16,10);
+  ST7735_FillScreen(ST7735_BLACK);
+  ST7735_DrawBitmap(0,159,BlueRocket_15x24,15,24);
 
-  for(uint32_t t=500;t>0;t=t-5){
-    SmallFont_OutVertical(t,104,6); // top left
-    Clock_Delay1ms(50);              // delay 50 msec
-  }
-  ST7735_FillScreen(0x0000);   // set screen to black
-  ST7735_SetCursor(1, 1);
-  ST7735_OutString((char *)"GAME OVER");
-  ST7735_SetCursor(1, 2);
-  ST7735_OutString((char *)"Nice try,");
-  ST7735_SetCursor(1, 3);
-  ST7735_OutString((char *)"Earthling!");
-  ST7735_SetCursor(2, 4);
-  ST7735_OutUDec(1234);
+
+  // for(uint32_t t=500;t>0;t=t-5){
+  //   SmallFont_OutVertical(t,104,6); // top left
+  //   Clock_Delay1ms(50);              // delay 50 msec
+  // }
+  // ST7735_FillScreen(0x0000);   // set screen to black
+  // ST7735_SetCursor(1, 1);
+  // ST7735_OutString((char *)"GAME OVER");
+  // ST7735_SetCursor(1, 2);
+  // ST7735_OutString((char *)"Nice try,");
+  // ST7735_SetCursor(1, 3);
+  // ST7735_OutString((char *)"Earthling!");
+  // ST7735_SetCursor(2, 4);
+  // ST7735_OutUDec(1234);
   while(1){
   }
 }
@@ -193,6 +236,8 @@ int main4(void){ uint32_t last=0,now;
   }
 }
 // ALL ST7735 OUTPUT MUST OCCUR IN MAIN
+
+//  rocket* ship1;
 int main(void){ // final main
   __disable_irq();
   PLL_Init(); // set bus speed
@@ -200,60 +245,39 @@ int main(void){ // final main
   ST7735_InitPrintf();
     //note: if you colors are weird, see different options for
     // ST7735_InitR(INITR_REDTAB); inside ST7735_InitPrintf()
+  ST7735_FillScreen(ST7735_BLACK);
   Sensor.Init(); // PB18 = ADC1 channel 5, slidepot
   Switch_Init(); // initialize switches
   LED_Init();    // initialize LED
   Sound_Init();  // initialize sound
   TExaS_Init(0,0,&TExaS_LaunchPadLogicPB27PB26); // PB27 and PB26
     // initialize interrupts on TimerG12 at 30 Hz
+    TimerG12_IntArm(80000000/30, 0);
   
   // initialize all data structures
   __enable_irq();
+  ST7735_FillScreen(ST7735_CYAN);
 
-  const int initialY = 160;
-  const int initialX = 30;
+  ship1 = new rocket(0,160);
+  ship1->startMoving(0, -3);
+     
 
-  int oldY = initialY;
-  int oldX = initialX;
+  int counter = 0;
 
-  const int spriteWidth = 18;
-  const int spriteHeight = 8;
-  
-  const uint16_t bgColor = ST7735_BLUE;
-  ST7735_FillScreen(ST7735_BLUE);
+   while (1) {
+    if (flag) {
+      flag = 0;
+        ship1->draw();
 
-  for (int i = 0; i < 100; i++) {
-    int newY = initialY - i;
-    int newX = initialX + i;
-
-//Replace Previous
-    for (int row = 0; row < spriteHeight; row++) {
-      for (int col = 0; col < spriteWidth; col++) {
-          ST7735_DrawPixel(oldX + col, oldY - row, bgColor);
-      }
-    }
-
-//Redraw Sprite (Transparent)
-    int spriteColorIndex = 0;
-    for (int row = 0; row < spriteHeight; row++) {
-      for (int col = 0; col < spriteWidth; col++) {
-        int currPixelColor = PlayerShip0[spriteColorIndex];
-        spriteColorIndex++;
-
-        if (currPixelColor == ST7735_BLACK) {
-            ST7735_DrawPixel(newX + col, newY - row, bgColor);
-        } 
-        else {
-            ST7735_DrawPixel(newX + col, newY - row, currPixelColor);
+        // Update and remove bullet if off-screen
+        if (currentBullet != nullptr) {
+            if (!currentBullet->draw()) {
+                delete currentBullet;
+                currentBullet = nullptr;
+            }
         }
-      }
+
+        counter++;
     }
-
-//Set old-pos to new-pos
-    oldY = newY;
-    oldX = newX;
-    Clock_Delay1ms(50);
-  }
-
-  while(1) {}
+   }
 }
