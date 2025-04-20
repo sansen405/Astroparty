@@ -12,6 +12,7 @@
 #include "LED.h"
 #include "Switch.h"
 #include "Sound.h"
+#include "images.h"
 #include "images/images.h"
 #include "Rocket.h"
 #include "Bullet.h"
@@ -31,9 +32,8 @@ bullet::bullet(rocket r) {
 bool bullet::draw() {
     // Clear previous bullet
     bool onScreen = true;
-    if(counter > 1){
-        ST7735_FillRect(posX, posY - dimY + 1, dimX, dimY, ST7735_CYAN);
-
+    if(counter > 3){
+        ST7735_DrawBitmap(posX, posY, Astrobackground, dimX, dimY);
         if (posX + vX <= (127 - dimX) && posX + vX >= 0) {
             posX += vX;
         } else {
@@ -48,6 +48,7 @@ bool bullet::draw() {
 
         // Only draw if still on screen
         if (onScreen) {
+            // ST7735_DrawSmallCircle(posX, posY, ST7735_ORANGE);
             ST7735_FillRect(posX, posY - dimY + 1, dimX, dimY, ST7735_ORANGE);
         }
     }
@@ -62,6 +63,3 @@ bool bullet::draw() {
     counter++;
     return onScreen;
 }
-
-
-

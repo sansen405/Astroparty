@@ -12,44 +12,39 @@
 #include "LED.h"
 #include "Switch.h"
 #include "Sound.h"
-#include "images/images.h"
+#include "images.h"
 #include "Rocket.h"
-// Blue Rocket ///
-const unsigned short BlueRocket_15x24[] = {
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xF7BF, 0xF7DF, 0xF7DF, 0xEF9F, 0xEF7E, 0xF7BF, 0xFFFF, 0xFFFF, 0xFFDF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xEF9F, 0xD6BB,
- 0xDEBB, 0xDEDC, 0xCDF6, 0xC552, 0xCE38, 0xE73C, 0xE71B, 0xE73D, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xC6DF, 0xAD14, 0xB4B0,
- 0xBCF1, 0x9B68, 0x8A00, 0xA3AA, 0xBD31, 0xB4CF, 0xCE38, 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xBEBF, 0xB4F3, 0xB387, 0xBBC7,
- 0xB344, 0xAAA1, 0xBB65, 0xBBC7, 0xA3A7, 0xC617, 0xE7BF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xBEBF, 0xBD13, 0xB303, 0xC321, 0xCBA3,
- 0xD3A4, 0xD3A3, 0xBB00, 0xAB24, 0xC617, 0xDF9F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xB69F, 0xACF4, 0xAB04, 0xBB22, 0xCB83, 0xC384,
- 0xCB83, 0xBB01, 0xA345, 0xBDF8, 0xE79F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xC6FF, 0xA579, 0xAB68, 0xBB22, 0xCB63, 0xC384, 0xC363,
- 0xBB02, 0xABEA, 0xCE7B, 0xEFBF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xE77F, 0xAE5E, 0xAC0D, 0xBB23, 0xCB63, 0xCBA4, 0xC342, 0xB304,
- 0xB4D1, 0xDF5F, 0xFFDF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFDF, 0xC6DF, 0xACF3, 0xAB26, 0xC323, 0xCBA3, 0xBB41, 0xAB67, 0xC5B7,
- 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xDF5F, 0xB5D9, 0xAB89, 0xBB02, 0xC363, 0xB302, 0xABEA, 0xD6BC, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xEFBF, 0xCEDF, 0xAC2D, 0xB302, 0xBB02, 0xAAE3, 0xB4AF, 0xEFBF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xDF5F, 0xB513, 0xB344, 0xB2A0, 0xAB47, 0xC5B5, 0xEFDF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xE79F, 0xC618, 0xB3A8, 0xAA60, 0xB3EA, 0xCE9B, 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xDF1D, 0xB42D, 0x9AA2, 0xB48F, 0xE75F, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xF7BF, 0xBD11, 0xA368, 0xBD74, 0xF7DF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xD636, 0xB4D0, 0xD699, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xEF3C, 0xDE9A, 0xEF5D, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFDF, 0xF7BF, 0xFFDF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
- 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF
-};
 
-rocket :: rocket(int x,int y) {
+
+
+
+
+
+
+rocket :: rocket(int x,int y,int imgInd) {
         posX = x;
         posY = y;
         vX = 0;
         vY = 0;
         aX = 0;
         aY = 0;
-        dimX = 15;
-        dimY = 24;
+        if(imgInd == 1 || imgInd == 3 || imgInd == 5 || imgInd == 7){
+            dimX = 21;
+            dimY = 21;
+        }
+        if(imgInd == 0 || imgInd == 4){
+            dimX = 16;
+            dimY = 21;
+        }
+        else{
+            dimY = 21;
+            dimX = 16;
+        }
+
+
+        imageIndex = imgInd;
+        image = rotationsBlue[imgInd];
+        direction = 0;
     }
 
 
@@ -71,25 +66,116 @@ int rocket::getVX() {
 int rocket::getVY() {
     return vY; // just above the rocket (tip of the nose)
 }
+
+bool isNearlyWhite(unsigned short color) {
+    // Extract RGB components from custom RGB565 format (BGR565)
+    unsigned char blue  = (color >> 11) & 0x1F;  // bits 15–11
+    unsigned char green = (color >> 5)  & 0x3F;  // bits 10–5
+    unsigned char red   = color         & 0x1F;  // bits 4–0
+
+    // Thresholds close to max values (31 for R/B, 63 for G)
+    const unsigned char RED_THRESH = 29;
+    const unsigned char GREEN_THRESH = 58;
+    const unsigned char BLUE_THRESH = 29;
+
+    return (red >= RED_THRESH) && (green >= GREEN_THRESH) && (blue >= BLUE_THRESH);
+}
+
+
+
+
     // if button is pressed call rotate 
 void rocket::rotate(){
     // Circular velocity steps (unit circle * 3 for speed)
+    // int rotateX[16] = {
+    //      0,  1,  2,  3,  3,  3,  2,  1,
+    //      0, -1, -2, -3, -3, -3, -2, -1
+    // };
+
+    // int rotateY[16] = {
+    //     -3, -3, -2, -1,  0,  1,  2,  3,
+    //      3,  3,  2,  1,  0, -1, -2, -3
+    // };
     int rotateX[16] = {
-         0,  1,  2,  3,  3,  3,  2,  1,
-         0, -1, -2, -3, -3, -3, -2, -1
+     0,  -1,  -2,  -2,  -2,  -2,  -2,  -1,
+     0, 1, 2, 2, 2, 2, 2, 1
     };
 
     int rotateY[16] = {
-        -3, -3, -2, -1,  0,  1,  2,  3,
-         3,  3,  2,  1,  0, -1, -2, -3
+        2, 2, 2, 1,  0,  -1,  -2,  -2,
+        -2,  -2,  -2,  -1,  0, 1, 2, 2
     };
 
-    static int direction = 0;         // keeps track of rotation index
-    direction = (direction + 1) % 16; // rotate clockwise
+    for (int row = 0; row < 23; row++) {
+        for (int col = 0; col < 23; col++) {
+            ST7735_DrawPixel(posX + col, posY - row, Astrobackground[(posY - row) * 128 + (posX + col)]);
+         }
+    }
 
-    vX = rotateX[direction];
-    vY = rotateY[direction];
+    imageIndex++;
+    if(imageIndex == 4){
+        imageIndex = 0;
+    }
+     Clock_Delay1ms(1000);
+
+    image = rotationsBlue[imageIndex];
+    if(imageIndex == 1 || imageIndex == 3 || imageIndex == 5 || imageIndex == 7){
+       dimX = 21;
+        dimY = 21;
+    }   
+    if(imageIndex == 0 || imageIndex == 4){
+        dimX = 16;
+        dimY = 21;
+    }
+    else{
+        dimY = 21;
+        dimX = 16;
+    }
+
+
+    // keeps track of rotation index
+    //direction = (direction + 1) % 16; // rotate clockwise
+
+    vX = rotateX[imageIndex*4];
+    vY = rotateY[imageIndex*4];
 }
+
+// void rocket:: rotateInverse() {
+// int rotateX[16] = {
+//      0,  -1,  -2,  -2,  -2,  -2,  -2,  -1,
+//      0, 1, 2, 2, 2, 2, 2, 1
+// };
+
+// int rotateY[16] = {
+//     2, 2, 2, 1,  0,  -1,  -2,  -2,
+//      -2,  -2,  -2,  -1,  0, 1, 2, 2
+// };
+
+
+//     // keeps track of rotation index
+//     direction = (direction  + 1) % 16; // rotate clockwise
+
+//     vX = -rotateX[direction];
+//     vY = -rotateY[direction];
+// }  
+void rocket::rotateInverse() {
+    int rotateX[16] = {
+        0,  -1,  -2,  -2,  -2,  -2,  -2,  -1,
+        0, 1, 2, 2, 2, 2, 2, 1
+    };
+
+    int rotateY[16] = {
+        2, 2, 2, 1,  0,  -1,  -2,  -2,
+       -2,  -2,  -2,  -1,  0, 1, 2, 2
+    };
+
+    direction = (direction +1) % 16;
+
+    vX = -rotateX[direction];
+    vY = -rotateY[direction];
+}
+
+
 
 void rocket:: startMoving (int velX, int velY) {
         vY = velY;
@@ -101,12 +187,18 @@ void rocket:: setVelocity(int velocityX, int velocityY) {
         this->vY = velocityY;
     }
 
+bool rocket::hitByBullet(bullet bull){
+    int bullX = bull
+}
+
+
+
 void rocket:: draw() {
         // ST7735_FillRect(posX, posY, dimX, dimY, ST7735_CYAN);// makes so it doesnt drag
         // Clear previous sprite from screen using correct Y-offset
-ST7735_FillRect(posX, posY - dimY + 1, dimX, dimY, ST7735_CYAN);
+// ST7735_FillRect(posX, posY - dimY + 1, dimX, dimY, ST7735_CYAN);
 
-
+    // sets position and keeps it within bounds
         if(posX+vX<=(127-15) && posX+vX>=0) {
             posX+=vX;
          }
@@ -114,22 +206,22 @@ ST7735_FillRect(posX, posY - dimY + 1, dimX, dimY, ST7735_CYAN);
             posY+=vY;
          }
 
-        ST7735_DrawBitmap(posX, posY,BlueRocket_15x24, 15, 24);
-        int spriteColorIndex = 0;
-        
-        for (int row = 0; row < dimY; row++) {
-            for (int col = 0; col < dimX; col++) {
-                int currPixelColor = BlueRocket_15x24[spriteColorIndex];
-                spriteColorIndex++;
 
-                if (currPixelColor == ST7735_WHITE) {
-                    ST7735_DrawPixel(posX + col, posY - row, ST7735_CYAN);
-                }
-            else {
-                ST7735_DrawPixel(posX + col, posY - row, currPixelColor);
-            }
-        }
-    }
+//        ST7735_DrawTransperantBitmap(posX, posY, BlueRocket_15x24, 15, 24, 0xFFFF);
+//       ST7735_DrawBitmap(posX, posY,BlueRocket_15x24, 15, 24);
+         int spriteColorIndex = 0;
+         for (int row = 0; row < dimY; row++) {
+             for (int col = 0; col < dimX; col++) {
+                 int currPixelColor = image[spriteColorIndex];
+                 spriteColorIndex++;
+
+                 if (currPixelColor > 0xD1000) {
+
+                     ST7735_DrawPixel(posX + col, posY - row, Astrobackground[(posY - row) * 128 + (posX + col)]); // gets right index of background to show
+                 }
+             else {
+                 ST7735_DrawPixel(posX + col, posY - row, currPixelColor);
+             }
+         }
+     }
 }
-
-

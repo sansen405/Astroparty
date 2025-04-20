@@ -1,3 +1,4 @@
+"./Boundary.o"
 "./Bullet.o"
 "./Clock.o"
 "./DAC5.o"
@@ -13,6 +14,7 @@
 "./Switch.o"
 "./TExaS.o"
 "./Timer.o"
+"./images.o"
 "./images/pipedreams/PipeSound.o"
 "./ticlang/startup_mspm0g3507_ticlang.o"
 "../mspm0g3507.cmd"

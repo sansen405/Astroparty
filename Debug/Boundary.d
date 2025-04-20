@@ -1,6 +1,6 @@
 # FIXED
 
-Rocket.o: ../Rocket.cpp \
+Boundary.o: ../Boundary.cpp \
  /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/msp.h \
  /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/DeviceFamily.h \
  /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/m0p/mspm0g350x.h \
@@ -34,7 +34,7 @@ Rocket.o: ../Rocket.cpp \
  ../../inc/ST7735.h ../../inc/Clock.h ../../inc/LaunchPad.h \
  ../../inc/TExaS.h ../../inc/Timer.h ../../inc/SlidePot.h \
  ../../inc/DAC5.h ../SmallFont.h ../LED.h ../Switch.h ../Sound.h \
- ../images.h ../Rocket.h
+ ../images/images.h ../Rocket.h ../Bullet.h ../Boundary.h
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/msp.h:
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/DeviceFamily.h:
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/m0p/mspm0g350x.h:
@@ -76,5 +76,7 @@ Rocket.o: ../Rocket.cpp \
 ../LED.h:
 ../Switch.h:
 ../Sound.h:
-../images.h:
+../images/images.h:
 ../Rocket.h:
+../Bullet.h:
+../Boundary.h:

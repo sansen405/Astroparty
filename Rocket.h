@@ -1,3 +1,4 @@
+#include "Bullet.h"
 #include <stdint.h>
 #ifndef ROCKET_H
 #define ROCKET_H
@@ -12,6 +13,8 @@ private:
     int aX;
     int aY;
     int direction; // index for sprite rotation
+    int imageIndex;
+    uint16_t* image;
 
 public:
 
@@ -19,13 +22,17 @@ public:
     int getY();  // Declaration of getY
     int getVX(); // Declaration of getVX
     int getVY(); // Declaration of getVY
-    rocket(int x, int y);
+    rocket(int x, int y, int imageIndex);
     void rotate();
+    void rotateInverse();
     void startMoving(int velX, int velY);
     void setVelocity(int velocityX, int velocityY);
+    bool hitByBullet(bullet bull); 
     void draw();
-
-    
 };
+// array's 
+extern const unsigned short BlueRocket_15x24[];
+
+
 
 #endif // ROCKET_H
