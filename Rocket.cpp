@@ -16,11 +16,6 @@
 #include "Rocket.h"
 
 
-
-
-
-
-
 rocket :: rocket(int x,int y,int imgInd) {
         posX = x;
         posY = y;
@@ -50,12 +45,20 @@ rocket :: rocket(int x,int y,int imgInd) {
 
 #define TIP_OFFSET 15  // how far from center to tip (adjust to fit rocket sprite)
 
-int rocket::getX() {
+int rocket::getMiddleX() {
     return posX + dimX/2;
 }
 
-int rocket::getY() {
+int rocket::getMiddleY() {
     return posY - dimY/2;  // minus because screen Y grows downward
+}
+
+int rocket::getX(){
+    return posX;
+}
+
+int rocket::getY(){
+    return posY;
 }
 
 
@@ -118,19 +121,19 @@ void rocket::rotate(){
     }
      Clock_Delay1ms(1000);
 
-    image = rotationsBlue[imageIndex];
-    if(imageIndex == 1 || imageIndex == 3 || imageIndex == 5 || imageIndex == 7){
-       dimX = 21;
-        dimY = 21;
-    }   
-    if(imageIndex == 0 || imageIndex == 4){
-        dimX = 16;
-        dimY = 21;
-    }
-    else{
-        dimY = 21;
-        dimX = 16;
-    }
+    // image = rotationsBlue[imageIndex];
+    // if(imageIndex == 1 || imageIndex == 3 || imageIndex == 5 || imageIndex == 7){
+    //    dimX = 21;
+    //     dimY = 21;
+    // }   
+    // if(imageIndex == 0 || imageIndex == 4){
+    //     dimX = 16;
+    //     dimY = 21;
+    // }
+    // else{
+    //     dimY = 21;
+    //     dimX = 16;
+    // }
 
 
     // keeps track of rotation index
@@ -175,6 +178,27 @@ void rocket::rotateInverse() {
     vY = -rotateY[direction];
 }
 
+void rocket::boundCheck() {
+    for(int i = -5; i <= 5; i++) {
+        int checkX = posX + i;
+        if(checkX >= 0 && checkX <= 127) {
+            unsigned short colorAtPoint = Astrobackground[posY * 128 + checkX];
+            if(colorAtPoint == 0xF615) {
+                vX = 0; 
+            }
+        }
+    }
+    for(int i = -5; i <= 5; i++) {
+        int checkY = posY + i;
+        if(checkY >= 0 && checkY <= 159) {
+            unsigned short colorAtPoint = Astrobackground[checkY * 128 + posX];
+            if(colorAtPoint == 0xF615) {
+                vY = 0; 
+            }
+        }
+    }
+}
+
 
 
 void rocket:: startMoving (int velX, int velY) {
@@ -187,16 +211,17 @@ void rocket:: setVelocity(int velocityX, int velocityY) {
         this->vY = velocityY;
     }
 
-bool rocket::hitByBullet(bullet bull){
-    int bullX = bull
-}
+
 
 
 
 void rocket:: draw() {
+        
         // ST7735_FillRect(posX, posY, dimX, dimY, ST7735_CYAN);// makes so it doesnt drag
         // Clear previous sprite from screen using correct Y-offset
 // ST7735_FillRect(posX, posY - dimY + 1, dimX, dimY, ST7735_CYAN);
+
+        boundCheck();
 
     // sets position and keeps it within bounds
         if(posX+vX<=(127-15) && posX+vX>=0) {
@@ -215,7 +240,7 @@ void rocket:: draw() {
                  int currPixelColor = image[spriteColorIndex];
                  spriteColorIndex++;
 
-                 if (currPixelColor > 0xD1000) {
+                 if (currPixelColor == ST7735_WHITE) {
 
                      ST7735_DrawPixel(posX + col, posY - row, Astrobackground[(posY - row) * 128 + (posX + col)]); // gets right index of background to show
                  }

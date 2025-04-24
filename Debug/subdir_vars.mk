@@ -20,7 +20,8 @@ CPP_SRCS += \
 ../Switch.cpp \
 /Users/sanjaysenthil/Desktop/319K/MSPM0_ValvanoWare/inc/TExaS.cpp \
 /Users/sanjaysenthil/Desktop/319K/MSPM0_ValvanoWare/inc/Timer.cpp \
-../images.cpp 
+../images.cpp \
+../sounds.cpp 
 
 CMD_SRCS += \
 ../mspm0g3507.cmd 
@@ -42,7 +43,8 @@ OBJS += \
 ./Switch.o \
 ./TExaS.o \
 ./Timer.o \
-./images.o 
+./images.o \
+./sounds.o 
 
 CPP_DEPS += \
 ./Boundary.d \
@@ -61,7 +63,8 @@ CPP_DEPS += \
 ./Switch.d \
 ./TExaS.d \
 ./Timer.d \
-./images.d 
+./images.d \
+./sounds.d 
 
 OBJS__QUOTED += \
 "Boundary.o" \
@@ -80,7 +83,8 @@ OBJS__QUOTED += \
 "Switch.o" \
 "TExaS.o" \
 "Timer.o" \
-"images.o" 
+"images.o" \
+"sounds.o" 
 
 CPP_DEPS__QUOTED += \
 "Boundary.d" \
@@ -99,7 +103,8 @@ CPP_DEPS__QUOTED += \
 "Switch.d" \
 "TExaS.d" \
 "Timer.d" \
-"images.d" 
+"images.d" \
+"sounds.d" 
 
 CPP_SRCS__QUOTED += \
 "../Boundary.cpp" \
@@ -118,6 +123,7 @@ CPP_SRCS__QUOTED += \
 "../Switch.cpp" \
 "/Users/sanjaysenthil/Desktop/319K/MSPM0_ValvanoWare/inc/TExaS.cpp" \
 "/Users/sanjaysenthil/Desktop/319K/MSPM0_ValvanoWare/inc/Timer.cpp" \
-"../images.cpp" 
+"../images.cpp" \
+"../sounds.cpp" 
 
 

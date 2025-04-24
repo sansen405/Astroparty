@@ -19,7 +19,10 @@ public:
     bullet(rocket r);
     void startMoving(rocket r);
     void setVelocity(int velocityX, int velocityY);
+    int getX();
+    int getY();
     bool draw();
+    bool hitShip(rocket* r);
 };
 
 #endif

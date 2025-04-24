@@ -26,7 +26,23 @@ bullet::bullet(rocket r) {
         dimY = 5;
         counter = 0;
     }
-    // if button is pressed call rotate 
+    // if button is pressed call rotate
+
+int bullet::getX(){
+    return posX;
+} 
+
+int bullet::getY(){
+    return posY;
+} 
+
+bool bullet::hitShip(rocket* r){
+    if(r == nullptr){
+        return false;
+    }
+    return (posX <= r->getMiddleX() + 8 && posX >= r->getMiddleX() - 8 &&
+            posY <= r->getMiddleY() + 8 && posY >= r->getMiddleY() - 8);
+}
 
 
 bool bullet::draw() {

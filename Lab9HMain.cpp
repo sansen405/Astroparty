@@ -4,6 +4,7 @@
 // Your name
 // Last Modified: 12/26/2024
 
+#include <cstddef>
 #include <stdio.h>
 #include <stdint.h>
 #include <ti/devices/msp/msp.h>
@@ -20,13 +21,18 @@
 #include "Sound.h"
 #include "images/images.h"
 #include "Rocket.h"
-#include "Bullet.h"
+#include "bullet.h"
 #include "images.h"
+#include "sounds.h"
+
+void clearShip(rocket* r);
 //#include "UART.h"
 // ships as global declerations
   rocket* ship2; // player 2
   rocket* ship1;
-  bullet* currentBullet = nullptr;
+  bullet* bulletP1 = nullptr;
+  bullet* bulletP2 = nullptr;
+
   int flag = 0;
 extern "C" void __disable_irq(void);
 extern "C" void __enable_irq(void);
@@ -64,7 +70,7 @@ void TIMG12_IRQHandler(void){uint32_t pos,msg;
       int turn = GPIOB->DIN31_0 & 0x1; // gets value to turn
     // 3) move sprites
       if (turn) {
-        ship1->rotate();
+        ship1->rotateInverse();
       }
 
       // logic for UART 
@@ -77,8 +83,8 @@ void TIMG12_IRQHandler(void){uint32_t pos,msg;
 
       int shoot = GPIOB->DIN31_0 & 0x2;
       if (shoot) {
-        if (currentBullet == nullptr) {
-            currentBullet = new bullet(*ship1); // Copy rocket state
+        if (bulletP1 == nullptr) {
+            bulletP1 = new bullet(*ship1); // Copy rocket state
         }
       }
     // 4) start sounds
@@ -187,7 +193,7 @@ int main3(void){ // main3
   }
 }
 // use main4 to test sound outputs
-int main4(void){ uint32_t last=0,now;
+int main(void){ uint32_t last=0,now;
   __disable_irq();
   PLL_Init(); // set bus speed
   LaunchPad_Init();
@@ -197,67 +203,146 @@ int main4(void){ uint32_t last=0,now;
   TExaS_Init(ADC0,6,0); // ADC1 channel 6 is PB20, TExaS scope
   __enable_irq();
   while(1){
-    now = Switch_In(); // one of your buttons
-    if((last == 0)&&(now == 1)){
-      Sound_Shoot(); // call one of your sounds
-    }
-    if((last == 0)&&(now == 2)){
-      Sound_Killed(); // call one of your sounds
-    }
-    if((last == 0)&&(now == 4)){
-      Sound_Explosion(); // call one of your sounds
-    }
-    if((last == 0)&&(now == 8)){
-      Sound_Fastinvader1(); // call one of your sounds
-    }
+    Sound_Shoot();
     // modify this to test all your sounds
   }
 }
 // ALL ST7735 OUTPUT MUST OCCUR IN MAIN
-int main(void){ // final main
+int main5(void) { // final main
   __disable_irq();
   PLL_Init(); // set bus speed
   LaunchPad_Init();
-  //UART2_Init(); // init for UART Protocol
   ST7735_InitPrintf();
-    //note: if you colors are weird, see different options for
-    // ST7735_InitR(INITR_REDTAB); inside ST7735_InitPrintf()
   ST7735_FillScreen(ST7735_BLACK);
   Sensor.Init(); // PB18 = ADC1 channel 5, slidepot
   Switch_Init(); // initialize switches
   LED_Init();    // initialize LED
   Sound_Init();  // initialize sound
-  TExaS_Init(0,0,&TExaS_LaunchPadLogicPB27PB26); // PB27 and PB26
-    // initialize interrupts on TimerG12 at 30 Hz
-    TimerG12_IntArm(80000000/30, 0);
-  
-
-
-
+  TExaS_Init(0, 0, &TExaS_LaunchPadLogicPB27PB26); // PB27 and PB26
+  TimerG12_IntArm(80000000 / 30, 0); // 30 Hz game engine
   __enable_irq();
-  ST7735_DrawBitmap(0, 159, Astrobackground, 128, 160);
- // ship1 = new rocket(0,160,15, 24, BlueRocket_15x24);
-  ship1 = new rocket(0 ,159, 1);
-  ship2 = new rocket(127-16, 22, 0);// player 2
-  ship1->startMoving(2, 2);
 
-  int counter = 0;
+  int score1 = 0;
+  int score2 = 0;
 
-   while (1) {
-    if (flag) {
-      flag = 0;
-        ship1->draw();
-        ship2->draw();
+  // START OF GAME - 3 ROUNDS
+  for (int i = 0; i < 3; i++) {
+    ST7735_DrawBitmap(0, 159, Astrobackground, 128, 160);
 
-        // Update and remove bullet if off-screen
-        if (currentBullet != nullptr) {
-            if (!currentBullet->draw()) {
-                delete currentBullet;
-                currentBullet = nullptr;
-            }
+    // Reinitialize ships
+    ship1 = new rocket(0, 159, 0);
+    ship2 = new rocket(127 - 16, 22, 0); // player 2
+    ship1->startMoving(2, 2);
+
+    flag = 0; // reset flag before round
+    if (bulletP1 != nullptr) {
+      delete bulletP1;
+      bulletP1 = nullptr;
+    }
+
+    if (bulletP2 != nullptr) {
+      delete bulletP2;
+      bulletP2 = nullptr;
+    }
+
+    bool roundOver = false;
+
+    while (!roundOver) {
+      if (flag) {
+        flag = 0;
+
+
+//ship 2 hit by ship 1 bullet
+        if (bulletP1 != nullptr && ship2 != nullptr) {
+          if (bulletP1->hitShip(ship2)) {
+
+            // for (int row = 0; row < 21; row++) {
+            //   for (int col = 0; col < 21; col++) {
+            //       ST7735_DrawPixel(ship2->getX() + col, ship2->getY() - row,
+            //       Astrobackground[(ship2->getY() - row) * 128 + (ship2->getX() + col)]);
+            //   }
+            // } 
+            clearShip(ship1);
+            ship1->draw();
+
+            delete ship2;
+            ship2 = nullptr;
+
+            delete bulletP1;
+            bulletP1 = nullptr;
+
+            score1++;
+            roundOver = true;
+            break;
+          }
         }
 
-        counter++;
+
+//ship 1 hit by ship 2 bullet
+        else if (bulletP2 != nullptr && ship1 != nullptr) {
+          if (bulletP2->hitShip(ship1)) {
+            // for (int row = 0; row < 21; row++) {
+            //   for (int col = 0; col < 21; col++) {
+            //       ST7735_DrawPixel(ship1->getX() + col, ship1->getY() - row,
+            //       Astrobackground[(ship1->getY() - row) * 128 + (ship1->getX() + col)]);
+            //   }
+            // } 
+            clearShip(ship1);
+            ship2->draw();
+
+            delete ship1;
+            ship1 = nullptr;
+
+            delete bulletP2;
+            bulletP2 = nullptr;
+
+            score1++;
+            roundOver = true;
+            break;
+          }
+        }
+
+//draw ships in new location after movement
+        if (ship2 != nullptr) {
+          ship2->draw();
+        }
+        if (ship1 != nullptr) {
+          ship1->draw();
+        }
+
+
+//bullet on edge or boundary
+        if (bulletP1 != nullptr) {
+          if (!bulletP1->draw()) {
+            delete bulletP1;
+            bulletP1 = nullptr;
+          }
+        }
+
+        if (bulletP2 != nullptr) {
+          if (!bulletP2->draw()) {
+            delete bulletP2;
+            bulletP2 = nullptr;
+          }
+        }
+      }
     }
-   }
+
+//Delay and cleanup before next round
+    Clock_Delay1ms(2000);
+    ST7735_FillScreen(ST7735_BLACK);
+  }
 }
+
+void clearShip(rocket* r){
+    for (int row = 0; row < 21; row++) {
+      for (int col = 0; col < 21; col++) {
+          ST7735_DrawPixel(ship2->getX() + col, ship2->getY() - row,
+          Astrobackground[(ship2->getY() - row) * 128 + (ship2->getX() + col)]);          
+      }
+    } 
+}
+
+
+
+

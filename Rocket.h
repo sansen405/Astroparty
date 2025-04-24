@@ -20,14 +20,16 @@ public:
 
     int getX();  // Declaration of getX
     int getY();  // Declaration of getY
+    int getMiddleX(); 
+    int getMiddleY();
     int getVX(); // Declaration of getVX
     int getVY(); // Declaration of getVY
     rocket(int x, int y, int imageIndex);
     void rotate();
     void rotateInverse();
     void startMoving(int velX, int velY);
+    void boundCheck();
     void setVelocity(int velocityX, int velocityY);
-    bool hitByBullet(bullet bull); 
     void draw();
 };
 // array's 
